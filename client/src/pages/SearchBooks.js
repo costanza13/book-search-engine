@@ -44,6 +44,7 @@ const SearchBooks = () => {
         authors: book.volumeInfo.authors || ['No author to display'],
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
+        link: book.volumeInfo.infoLink,
         image: book.volumeInfo.imageLinks?.thumbnail || '',
       }));
 
@@ -116,10 +117,10 @@ const SearchBooks = () => {
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? (
-                  <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' />
+                  <a href={book.link} target="_blank"><Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /></a>
                 ) : null}
                 <Card.Body>
-                  <Card.Title>{book.title}</Card.Title>
+                <Card.Title><a href={book.link} target="_blank">{book.title}</a></Card.Title>
                   <p className='small'>Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
                   {Auth.loggedIn() && (
