@@ -9,7 +9,7 @@ const resolvers = {
         const userData = await User.findOne({ _id: context.user._id })
           .select('-__v -password');
 
-        return userData;
+          return userData;
       }
 
       throw new AuthenticationError('Not logged in');
@@ -40,7 +40,6 @@ const resolvers = {
       return { token, user };
     },
     saveBook: async (parent, { bookToSave }, context) => {
-      console.log('BTS', bookToSave);
       if (context.user) {
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
@@ -59,6 +58,8 @@ const resolvers = {
           { _id: context.user._id },
           { $pull: { savedBooks: { bookId: bookId } } }
         );
+
+        return updatedUser;
       }
     }
   }
