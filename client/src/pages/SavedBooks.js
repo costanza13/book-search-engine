@@ -8,12 +8,12 @@ import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   const { loading, data: userData } = useQuery(QUERY_ME);
-  const [deleteBook] = useMutation(REMOVE_BOOK, { refetchQueries: [QUERY_ME] });
+  const [deleteBook] = useMutation(REMOVE_BOOK);
 
   const token = Auth.loggedIn() ? Auth.getToken() : null;
 
   if (!token) {
-    return false;
+    document.location.replace('/')
   }
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
@@ -35,6 +35,7 @@ const SavedBooks = () => {
   if (loading) {
     return <h2>LOADING...</h2>;
   }
+  const user = userData.me;
 
   return (
     <>
@@ -45,12 +46,12 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.me.savedBooks.length
-            ? `Viewing ${userData.me.savedBooks.length} saved ${userData.me.savedBooks.length === 1 ? 'book' : 'books'}:`
+          {user.savedBooks.length
+            ? `Viewing ${user.savedBooks.length} saved ${user.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <CardColumns>
-          {userData.me.savedBooks.map((book) => {
+          {user.savedBooks.map((book) => {
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? <a href={book.link} target="_blank" rel="noopener noreferrer"><Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /></a> : null}
